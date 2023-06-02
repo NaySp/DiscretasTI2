@@ -5,4 +5,3 @@ public class ExistenceVertexException extends Exception{
         super(message);
     }
 }
-

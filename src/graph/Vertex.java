@@ -1,4 +1,4 @@
-package model;
+package graph;
 
 import java.awt.*;
 
@@ -55,4 +55,3 @@ public class Vertex <V>{
         this.parent = parent;
     }
 }
-

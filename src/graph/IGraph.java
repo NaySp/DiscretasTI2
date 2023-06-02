@@ -1,4 +1,4 @@
-package model;
+package graph;
 
 import exception.EdgeNotFoundException;
 import exception.ExistenceVertexException;
@@ -21,7 +21,7 @@ public interface IGraph<V> {
 
     void DfsVisit(Vertex<V> u);
 
-    Pair<ArrayList<Vertex<V>>, ArrayList<Integer>> dijkstra(V source) throws VertexNotFoundException;
+    void dijkstra(V source) throws VertexNotFoundException;
 
     Pair<int[][], GenericMatrix<V>> floydWarshall();
 
@@ -29,4 +29,5 @@ public interface IGraph<V> {
 
     ArrayList<Pair<Pair<Vertex<V>,Vertex<V>>,Integer>> kruskal();
 
+    String getPath(V destination) throws VertexNotFoundException ;
 }

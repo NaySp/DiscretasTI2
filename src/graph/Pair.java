@@ -1,4 +1,4 @@
-package model;
+package graph;
 
 import java.util.ArrayList;
 
@@ -27,4 +27,3 @@ public class Pair<V,T>{
         this.value2 = value2;
     }
 }
-

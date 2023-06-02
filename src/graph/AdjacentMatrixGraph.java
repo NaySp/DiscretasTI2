@@ -1,4 +1,4 @@
-package model;
+package graph;
 
 import exception.*;
 
@@ -189,13 +189,12 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
     }
 
     @Override
-    public Pair<ArrayList<Vertex<V>>, ArrayList<Integer>> dijkstra(V source) throws VertexNotFoundException {
+    public void dijkstra(V source) throws VertexNotFoundException {
         int sourceIndex = getIndex(source);
         if (sourceIndex == -1) throw new VertexNotFoundException("Vertex not found");
         ArrayList<Vertex<V>> previous = new ArrayList<>(Collections.nCopies(vertex.size(), null));
         ArrayList<Integer> distances = new ArrayList<>(Collections.nCopies(vertex.size(), Integer.MAX_VALUE));
         distances.set(sourceIndex, 0);
-        AdjacentListVertex<V> sourceVertex = (AdjacentListVertex<V>) vertex.get(sourceIndex);
         PriorityQueue<Vertex<V>> queue = new PriorityQueue<>(Comparator.comparingInt(v -> distances.get(getIndex(v.getValue()))));
         queue.addAll(vertex);
         while (!queue.isEmpty()) {
@@ -207,13 +206,13 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
                     int weight = weightMatrix.get(uIndex, i).get(0);
                     if (distances.get(uIndex) + weight < distances.get(i)) {
                         distances.set(i, distances.get(uIndex) + weight);
-                        previous.set(i, u);
+                        v.setParent(u);
                         queue.add(v);
                     }
                 }
             }
         }
-        return new Pair<>(previous, distances);
+
     }
 
     @Override
@@ -304,12 +303,24 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
         return minimumSpanningTree;
     }
 
-    public GenericMatrix<Integer> getAdjacentMatrix() {
-        return adjacentMatrix;
+    @Override
+    public String getPath(V destination) throws VertexNotFoundException {
+        int index = getIndex(destination);
+        if (index==-1) {
+            throw new VertexNotFoundException("Vertex not found");
+        }
+        StringBuilder path = new StringBuilder();
+        Vertex<V> vertex = this.vertex.get(index);
+        while (vertex.getParent()!=null){
+            path.append(vertex.getValue()).append(" -> ");
+            vertex = (AdjacentListVertex<V>) vertex.getParent();
+        }
+        path.append(vertex.getValue());
+        return path.toString();
     }
 
-    public GenericMatrix<ArrayList<Integer>> getWeightMatrix() {
-        return weightMatrix;
+    public GenericMatrix<Integer> getAdjacentMatrix() {
+        return adjacentMatrix;
     }
 
     public ArrayList<Vertex<V>> getVertex() {

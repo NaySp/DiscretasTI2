@@ -1,4 +1,4 @@
-package model;
+package graph;
 
 import exception.*;
 
@@ -22,7 +22,7 @@ public class AdjacentListGraph<V> implements IGraph<V> {
     }
 
     public int getIndex(V value) {
-        return index.getOrDefault(value, -1);
+        return index.getOrDefault(value,-1);
     }
 
     @Override
@@ -155,36 +155,34 @@ public class AdjacentListGraph<V> implements IGraph<V> {
     }
 
     @Override
-    public Pair<ArrayList<Vertex<V>>, ArrayList<Integer>> dijkstra(V source) throws VertexNotFoundException {
+    public void dijkstra(V source) throws VertexNotFoundException {
         int index = getIndex(source);
-        AdjacentListVertex<V> s = vertex.get(index);
-        if (s == null) {
+        if (index==-1) {
             throw new VertexNotFoundException("Vertex not found");
         }
-
-        ArrayList<Vertex<V>> previous = new ArrayList<>(Collections.nCopies(vertex.size(), null));
+        for(AdjacentListVertex<V> v : vertex) {
+            v.setParent(null);
+        }
         ArrayList<Integer> distances = new ArrayList<>(Collections.nCopies(vertex.size(), Integer.MAX_VALUE));
         distances.set(getIndex(source), 0);
-
         PriorityQueue<AdjacentListVertex<V>> queue = new PriorityQueue<>(Comparator.comparingInt(v -> distances.get(getIndex(v.getValue()))));
         queue.addAll(vertex);
 
         while (!queue.isEmpty()) {
             AdjacentListVertex<V> u = queue.poll();
+            int uIndex = getIndex(u.getValue());
             for (Pair<AdjacentListVertex<V>, Integer> p : u.getAdjacentList()) {
                 AdjacentListVertex<V> v = p.getValue1();
-                int uIndex = getIndex(u.getValue());
                 int vIndex = getIndex(v.getValue());
                 int vDistance = distances.get(vIndex);
-                int distance = distances.get(uIndex) + p.getValue2();
+                int distance = (distances.get(uIndex)==Integer.MAX_VALUE||p.getValue2()==Integer.MAX_VALUE)?Integer.MAX_VALUE: distances.get(uIndex) + p.getValue2();
                 if (distance < vDistance) {
                     distances.set(vIndex, distance);
-                    previous.set(vIndex, u);
+                    v.setParent(u);
                     queue.offer(v);
                 }
             }
         }
-        return new Pair<>(previous, distances);
     }
 
     @Override
@@ -280,6 +278,23 @@ public class AdjacentListGraph<V> implements IGraph<V> {
             }
         }
         return minimumSpanningTree;
+    }
+
+    public String getPath(V destination) throws VertexNotFoundException {
+        int index = getIndex(destination);
+        if (index==-1) {
+            throw new VertexNotFoundException("Vertex not found");
+        }
+        String path = "";
+        AdjacentListVertex<V> v = vertex.get(index);
+        return getPath(v, path);
+    }
+
+    private String getPath(AdjacentListVertex<V> v, String path) {
+        if (v.getParent() == null) {
+            return v.getValue() + path;
+        }
+        return getPath((AdjacentListVertex<V>) v.getParent(), " -> " + v.getValue() + path);
     }
 
     public ArrayList<AdjacentListVertex<V>> getVertex() {

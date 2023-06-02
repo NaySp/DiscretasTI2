@@ -1,9 +1,8 @@
-package model;
+package graph;
 
-import java.awt.*;
 import java.util.*;
 
-public class AdjacentListVertex <V> extends Vertex<V>{
+public class AdjacentListVertex <V> extends Vertex<V> {
 
     private ArrayList<Pair<AdjacentListVertex<V>,Integer>> adjacentList;
 

@@ -1,6 +1,6 @@
-package model;
+package graph;
 public class UnionFind {
-    private int[] parent;
+    private final int[] parent;
 
     public UnionFind(int size) {
         parent = new int[size];
@@ -20,8 +20,9 @@ public class UnionFind {
         int rootX = find(x);
         int rootY = find(y);
         if (rootX != rootY) {
-            parent[rootX] = rootY; // Actualizar el padre del conjunto
+            parent[rootX] = rootY;
         }
     }
 }
+
 
