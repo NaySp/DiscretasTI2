@@ -228,6 +228,9 @@ public class AdjacentListGraph<V> implements IGraph<V> {
         for (AdjacentListVertex<V> v : vertex) {
             v.setColor(Color.WHITE);
         }
+        for(AdjacentListVertex<V> v : vertex) {
+            v.setParent(null);
+        }
         ArrayList<Integer> distances = new ArrayList<>(Collections.nCopies(vertex.size(), Integer.MAX_VALUE));
         AdjacentListVertex<V> r = vertex.get(0);
         distances.set(0, 0);

@@ -192,7 +192,10 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
     public void dijkstra(V source) throws VertexNotFoundException {
         int sourceIndex = getIndex(source);
         if (sourceIndex == -1) throw new VertexNotFoundException("Vertex not found");
-        ArrayList<Vertex<V>> previous = new ArrayList<>(Collections.nCopies(vertex.size(), null));
+        for(Vertex<V> v : vertex){
+            v.setDistance(Integer.MAX_VALUE);
+            v.setParent(null);
+        }
         ArrayList<Integer> distances = new ArrayList<>(Collections.nCopies(vertex.size(), Integer.MAX_VALUE));
         distances.set(sourceIndex, 0);
         PriorityQueue<Vertex<V>> queue = new PriorityQueue<>(Comparator.comparingInt(v -> distances.get(getIndex(v.getValue()))));
@@ -207,7 +210,8 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
                     if (distances.get(uIndex) + weight < distances.get(i)) {
                         distances.set(i, distances.get(uIndex) + weight);
                         v.setParent(u);
-                        queue.add(v);
+                        queue.remove(v);
+                        queue.offer(v);
                     }
                 }
             }
@@ -254,6 +258,9 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
     @Override
     public void prim() {
         ArrayList<Integer> distances = new ArrayList<>(Collections.nCopies(vertex.size(), Integer.MAX_VALUE));
+        for(Vertex<V> v : vertex){
+            v.setParent(null);
+        }
         distances.set(0, 0);
         PriorityQueue<Vertex<V>> queue = new PriorityQueue<>(Comparator.comparingInt(v -> distances.get(getIndex(v.getValue()))));
         queue.addAll(vertex);
@@ -301,11 +308,16 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
         return minimumSpanningTree;
     }
 
-    private String getPath(AdjacentListVertex<V> v, String path) {
+    public String getPath(V v){
+        Vertex<V> v1 = vertex.get(getIndex(v));
+        return getPath( v1, "");
+    }
+
+    private String getPath(Vertex<V> v, String path) {
         if (v.getParent() == null) {
             return v.getValue() + path;
         }
-        return getPath((AdjacentListVertex<V>) v.getParent(), " -> " + v.getValue() + path);
+        return getPath( v.getParent(), " -> " + v.getValue() + path);
     }
 
     public GenericMatrix<Integer> getAdjacentMatrix() {

@@ -3,17 +3,18 @@ package model;
 import exception.ExistenceVertexException;
 import exception.VertexNotFoundException;
 import graph.AdjacentListGraph;
+import graph.AdjacentMatrixGraph;
 import graph.IGraph;
 import graph.Vertex;
 
 import java.util.ArrayList;
 
 public class Manager {
-    private AdjacentListGraph<Station> stations;
+    private AdjacentMatrixGraph<Station> stations;
     private ArrayList<Station> stationsList;
 
     public Manager(){
-        stations = new AdjacentListGraph<>(false,false,false);
+        stations = new AdjacentMatrixGraph<>(false,false,false);
         stationsList = new ArrayList<>();
     }
 
