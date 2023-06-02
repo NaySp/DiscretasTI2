@@ -237,13 +237,13 @@ public class AdjacentListGraph<V> implements IGraph<V> {
             AdjacentListVertex<V> u = queue.poll();
             for (Pair<AdjacentListVertex<V>, Integer> p : u.getAdjacentList()) {
                 AdjacentListVertex<V> v = p.getValue1();
-                int uIndex = getIndex(u.getValue());
                 int vIndex = getIndex(v.getValue());
                 int vDistance = distances.get(vIndex);
                 int distance = p.getValue2();
                 if (v.getColor() == Color.WHITE && distance < vDistance) {
                     distances.set(vIndex, distance);
                     v.setParent(u);
+                    queue.remove(v);
                     queue.offer(v);
                 }
             }
@@ -291,7 +291,7 @@ public class AdjacentListGraph<V> implements IGraph<V> {
         if (v.getParent() == null) {
             return v.getValue() + path;
         }
-        return getPath((AdjacentListVertex<V>) v.getParent(), " -> " + v.getValue() + path);
+        return getPath((AdjacentListVertex<V>) v.getParent(), " -> \n" + v.getValue() + path);
     }
 
     public ArrayList<AdjacentListVertex<V>> getVertex() {
