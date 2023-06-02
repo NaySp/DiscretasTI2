@@ -253,7 +253,6 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
 
     @Override
     public void prim() {
-        ArrayList<Vertex<V>> previous = new ArrayList<>(Collections.nCopies(vertex.size(), null));
         ArrayList<Integer> distances = new ArrayList<>(Collections.nCopies(vertex.size(), Integer.MAX_VALUE));
         distances.set(0, 0);
         PriorityQueue<Vertex<V>> queue = new PriorityQueue<>(Comparator.comparingInt(v -> distances.get(getIndex(v.getValue()))));
@@ -269,7 +268,7 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
                         distances.set(i, weight);
                         v.setParent(u);
                         queue.remove(v);
-                        queue.add(v);
+                        queue.offer(v);
                     }
                 }
             }
