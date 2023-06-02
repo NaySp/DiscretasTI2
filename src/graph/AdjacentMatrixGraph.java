@@ -252,7 +252,7 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
     }
 
     @Override
-    public Pair<ArrayList<Vertex<V>>, ArrayList<Integer>> prim() {
+    public void prim() {
         ArrayList<Vertex<V>> previous = new ArrayList<>(Collections.nCopies(vertex.size(), null));
         ArrayList<Integer> distances = new ArrayList<>(Collections.nCopies(vertex.size(), Integer.MAX_VALUE));
         distances.set(0, 0);
@@ -267,14 +267,13 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
                     int weight = weightMatrix.get(uIndex, i).get(0);
                     if (queue.contains(v) && weight < distances.get(i)) {
                         distances.set(i, weight);
-                        previous.set(i, u);
+                        v.setParent(u);
                         queue.remove(v);
                         queue.add(v);
                     }
                 }
             }
         }
-        return new Pair<>(previous, distances);
     }
 
     @Override
@@ -303,20 +302,11 @@ public class AdjacentMatrixGraph<V> implements IGraph<V> {
         return minimumSpanningTree;
     }
 
-    @Override
-    public String getPath(V destination) throws VertexNotFoundException {
-        int index = getIndex(destination);
-        if (index==-1) {
-            throw new VertexNotFoundException("Vertex not found");
+    private String getPath(AdjacentListVertex<V> v, String path) {
+        if (v.getParent() == null) {
+            return v.getValue() + path;
         }
-        StringBuilder path = new StringBuilder();
-        Vertex<V> vertex = this.vertex.get(index);
-        while (vertex.getParent()!=null){
-            path.append(vertex.getValue()).append(" -> ");
-            vertex = (AdjacentListVertex<V>) vertex.getParent();
-        }
-        path.append(vertex.getValue());
-        return path.toString();
+        return getPath((AdjacentListVertex<V>) v.getParent(), " -> " + v.getValue() + path);
     }
 
     public GenericMatrix<Integer> getAdjacentMatrix() {

@@ -224,15 +224,13 @@ public class AdjacentListGraph<V> implements IGraph<V> {
     }
 
     @Override
-    public Pair<ArrayList<Vertex<V>>, ArrayList<Integer>> prim() {
+    public void prim() {
         for (AdjacentListVertex<V> v : vertex) {
             v.setColor(Color.WHITE);
         }
-        ArrayList<Vertex<V>> parents = new ArrayList<>(Collections.nCopies(vertex.size(), null));
         ArrayList<Integer> distances = new ArrayList<>(Collections.nCopies(vertex.size(), Integer.MAX_VALUE));
         AdjacentListVertex<V> r = vertex.get(0);
         distances.set(0, 0);
-        parents.set(0, null);
         PriorityQueue<AdjacentListVertex<V>> queue = new PriorityQueue<>(Comparator.comparingInt(v -> distances.get(getIndex(v.getValue()))));
         queue.addAll(vertex);
         while (!queue.isEmpty()) {
@@ -245,13 +243,12 @@ public class AdjacentListGraph<V> implements IGraph<V> {
                 int distance = p.getValue2();
                 if (v.getColor() == Color.WHITE && distance < vDistance) {
                     distances.set(vIndex, distance);
-                    parents.set(vIndex, u);
+                    v.setParent(u);
                     queue.offer(v);
                 }
             }
             u.setColor(Color.BLACK);
         }
-        return new Pair<>(parents, distances);
     }
 
     @Override

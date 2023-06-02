@@ -25,9 +25,7 @@ public interface IGraph<V> {
 
     Pair<int[][], GenericMatrix<V>> floydWarshall();
 
-    Pair<ArrayList<Vertex<V>>, ArrayList<Integer>> prim();
+    void prim();
 
     ArrayList<Pair<Pair<Vertex<V>,Vertex<V>>,Integer>> kruskal();
-
-    String getPath(V destination) throws VertexNotFoundException ;
 }

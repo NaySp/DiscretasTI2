@@ -27,13 +27,14 @@ public class Main {
         m.readEdges();
         int option;
         do{
-            System.out.print("Choose an option : \n1.Show the best route between two stations\n2.\n0.Exit");
+            System.out.print("Choose an option : \n1.Show the best route between two stations\n2.Show the fastest travel between all stations\n0.Exit");
             option = sc.nextInt();
             switch(option){
                 case 1:
                     m.bestRoute();
                     break;
                 case 2:
+                    m.bestTravel();
                     break;
                 case 0 :
                     break;
@@ -54,6 +55,18 @@ public class Main {
             System.out.println("One of the stations is not in the system");
         }
     }
+
+    public void bestTravel(){
+        System.out.println("Enter the station where the travel will end:");
+        Scanner sc = new Scanner(System.in);
+        String destination = sc.nextLine();
+        try {
+            System.out.println(manager.bestTravel(destination));
+        } catch (VertexNotFoundException e) {
+            System.out.println("The station is not in the system");
+        }
+    }
+
 
     public void readStations(){
         File projectDir = new File(System.getProperty("user.dir"));

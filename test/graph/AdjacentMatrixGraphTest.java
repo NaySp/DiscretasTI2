@@ -1,6 +1,10 @@
-package model;
+package graph;
 
 import exception.*;
+import graph.AdjacentMatrixGraph;
+import graph.GenericMatrix;
+import graph.Pair;
+import graph.Vertex;
 import org.junit.Test;
 
 import java.awt.*;
@@ -9,7 +13,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class AdjacentMatrixGraphTest {
-    private AdjacentMatrixGraph<City> graph;
+    private AdjacentMatrixGraph<Integer> graph;
 
     public void setUp1() {
         this.graph = new AdjacentMatrixGraph<>(false, false, false);
@@ -26,12 +30,12 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testInsertVertex() {
         setUp1();
-        City c1 = new City("Bogota");
-        City c2 = new City("Cali");
-        City c3 = new City("Medellin");
-        City c4 = new City("Riohacha");
-        City c5 = new City("Valledupar");
-        City c6 = new City("Bucaramanga");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
+        Integer c6 = 6;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -54,10 +58,10 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testAddRepeatedVertex() {
         setUp1();
-        City c1 = new City("Bogota");
-        City c2 = new City("Cali");
-        City c3 = new City("Medellin");
-        City c4 = new City("Riohacha");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -75,11 +79,11 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testAddingMultipleVertex() {
         setUp1();
-        City c1 = new City("Bogota");
-        City c2 = new City("Cali");
-        City c3 = new City("Medellin");
-        City c4 = new City("Riohacha");
-        City c5 = new City("Valledupar");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -95,15 +99,15 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testAddEdgeInSimpleGraph() {
         setUp1();
-        City c1 = new City("Bogota");
-        City c2 = new City("Cali");
+        Integer c1 = 1;
+        Integer c2 = 2;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
             graph.addEdge(c1, c2, 0);
             assertThrows(MultipleEdgesNotAllowedException.class, () -> graph.addEdge(c2, c1, 0));
             assertThrows(LoopNotAllowedException.class, () -> graph.addEdge(c1, c1, 0));
-            assertThrows(VertexNotFoundException.class, () -> graph.addEdge(new City("Medellin"), c1, 0));
+            assertThrows(VertexNotFoundException.class, () -> graph.addEdge(3, c1, 0));
         } catch (Exception e) {
             fail();
         }
@@ -112,8 +116,8 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testAddEdgeInPseudoGraph() {
         setUp3();
-        City c1 = new City("Bogota");
-        City c2 = new City("Cali");
+        Integer c1 = 1;
+        Integer c2 = 2;
 
         try {
             graph.addVertex(c1);
@@ -133,12 +137,12 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testAddEdgeInDirectedGraph() {
         setUp4();
-        City c1 = new City("Bogota");
-        City c2 = new City("Cali");
-        City c3 = new City("Medellin");
-        City c4 = new City("Riohacha");
-        City c5 = new City("Valledupar");
-        City c6 = new City("Bucaramanga");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
+        Integer c6 = 6;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -172,11 +176,11 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testDeleteVertexInDirectedGraph() {
         setUp4();
-        City c1 = new City("Bogota");
-        City c2 = new City("Cali");
-        City c3 = new City("Medellin");
-        City c4 = new City("Riohacha");
-        City c5 = new City("Valledupar");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -205,11 +209,11 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testDeleteVertexInPseudoGraph() {
         setUp3();
-        City c1 = new City("Bogota");
-        City c2 = new City("Cartagena");
-        City c3 = new City("Santa Marta");
-        City c4 = new City("Riohacha");
-        City c5 = new City("Valledupar");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -238,9 +242,9 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testDeleteVertexInSimpleGraph() {
         setUp1();
-        City c1 = new City("Barranquilla");
-        City c2 = new City("Cartagena");
-        City c3 = new City("Bogota");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -261,10 +265,10 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testDeleteEdgeInSimpleGraph() {
         setUp1();
-        City c1 = new City("Barranquilla");
-        City c2 = new City("Cartagena");
-        City c3 = new City("Bogota");
-        City c4 = new City("Santa Marta");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -288,10 +292,10 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testDeleteEdgeExceptions() {
         setUp1();
-        City c1 = new City("Barranquilla");
-        City c2 = new City("Cartagena");
-        City c3 = new City("Bogota");
-        City c4 = new City("Santa Marta");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -306,17 +310,17 @@ public class AdjacentMatrixGraphTest {
         }
         assertThrows(EdgeNotFoundException.class, () -> graph.removeEdge(c1, c4, 0));
         assertThrows(EdgeNotFoundException.class, () -> graph.removeEdge(c3, c4, 0));
-        assertThrows(VertexNotFoundException.class, () -> graph.removeEdge(new City("Cali"), c2, 1));
+        assertThrows(VertexNotFoundException.class, () -> graph.removeEdge(5, c2, 1));
     }
 
     @Test
     public void testDeleteEdgeInPseudoGraph() {
         setUp3();
-        City c1 = new City("Bogota");
-        City c2 = new City("Cartagena");
-        City c3 = new City("Santa Marta");
-        City c4 = new City("Riohacha");
-        City c5 = new City("Valledupar");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -346,10 +350,10 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testBFSColor() {
         setUp1();
-        City c1 = new City("Barranquilla");
-        City c2 = new City("Cartagena");
-        City c3 = new City("Bogota");
-        City c4 = new City("Santa Marta");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -373,10 +377,10 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testBFSParents() {
         setUp1();
-        City c1 = new City("Barranquilla");
-        City c2 = new City("Cartagena");
-        City c3 = new City("Bogota");
-        City c4 = new City("Santa Marta");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -400,12 +404,12 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testBFSDistance() {
         setUp1();
-        City c1 = new City("Barranquilla");
-        City c2 = new City("Cartagena");
-        City c3 = new City("Santa Marta");
-        City c4 = new City("Riohacha");
-        City c5 = new City("Valledupar");
-        City c6 = new City("Bucaramanga");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
+        Integer c6 = 6;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -438,12 +442,12 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testDFSTime() {
         setUp1();
-        City c1 = new City("New York");
-        City c2 = new City("Los Angeles");
-        City c3 = new City("Chicago");
-        City c4 = new City("Houston");
-        City c5 = new City("Phoenix");
-        City c6 = new City("Philadelphia");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
+        Integer c6 = 6;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -476,11 +480,11 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testDFSDistance() {
         setUp1();
-        City c1 = new City("Tokyo");
-        City c2 = new City("Shanghai");
-        City c3 = new City("Seoul");
-        City c4 = new City("Beijing");
-        City c5 = new City("Hong Kong");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -511,13 +515,13 @@ public class AdjacentMatrixGraphTest {
     public void testDFSParents() {
         setUp1();
         //ciudades de europa
-        City c1 = new City("London");
-        City c2 = new City("Paris");
-        City c3 = new City("Rome");
-        City c4 = new City("Berlin");
-        City c5 = new City("Madrid");
-        City c6 = new City("Moscow");
-        City c7 = new City("Athens");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
+        Integer c5 = 5;
+        Integer c6 = 6;
+        Integer c7 = 7;
         try {
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -553,10 +557,10 @@ public class AdjacentMatrixGraphTest {
     @Test
     public void testFloydWarshall() {
         setUp1();
-        City c1 = new City("A");
-        City c2 = new City("B");
-        City c3 = new City("C");
-        City c4 = new City("D");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
 
         try {
             graph.addVertex(c1);
@@ -572,9 +576,9 @@ public class AdjacentMatrixGraphTest {
             fail();
         }
 
-        Pair<int[][], GenericMatrix<City>> floyd = graph.floydWarshall();
+        Pair<int[][], GenericMatrix<Integer>> floyd = graph.floydWarshall();
         int[][] distances = floyd.getValue1();
-        GenericMatrix<City> path = floyd.getValue2();
+        GenericMatrix<Integer> path = floyd.getValue2();
         assertEquals(0,distances[0][0]);
         assertEquals(1,distances[0][1]);
         assertEquals(3,distances[0][2]);
@@ -609,13 +613,14 @@ public class AdjacentMatrixGraphTest {
         assertEquals(c4,path.get(3,3));
     }
 
+
     @Test
     public void testPrim(){
         setUp1();
-        City c1 = new City("A");
-        City c2 = new City("B");
-        City c3 = new City("C");
-        City c4 = new City("D");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
         try{
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -629,23 +634,20 @@ public class AdjacentMatrixGraphTest {
         }catch(Exception e){
             fail();
         }
-        Pair<ArrayList<Vertex<City>>, ArrayList<Integer>> mst = graph.prim();
+        graph.prim();
         assertEquals(4, graph.getVertex().size());
-        assertEquals(c1, mst.getValue1().get(2).getValue());
-        assertEquals(c3, mst.getValue1().get(1).getValue());
-        assertEquals(c2,mst.getValue1().get(3).getValue());
-        assertEquals(7,(int)mst.getValue2().get(2));
-        assertEquals(5,(int)mst.getValue2().get(1));
-        assertEquals(3,(int)mst.getValue2().get(3));
+        assertNull(graph.getVertex().get(0).getParent());
+        assertEquals(c1, graph.getVertex().get(2).getParent().getValue());
+        assertEquals(c3,graph.getVertex().get(1).getParent().getValue());
     }
 
     @Test
     public void testKruskal(){
         setUp1();
-        City c1 = new City("A");
-        City c2 = new City("B");
-        City c3 = new City("C");
-        City c4 = new City("D");
+        Integer c1 = 1;
+        Integer c2 = 2;
+        Integer c3 = 3;
+        Integer c4 = 4;
         try{
             graph.addVertex(c1);
             graph.addVertex(c2);
@@ -659,7 +661,7 @@ public class AdjacentMatrixGraphTest {
         }catch(Exception e){
             fail();
         }
-        ArrayList<Pair<Pair<Vertex<City>,Vertex<City>>,Integer>>mst = graph.kruskal();
+        ArrayList<Pair<Pair<Vertex<Integer>,Vertex<Integer>>,Integer>>mst = graph.kruskal();
         assertEquals(4, graph.getVertex().size());
         assertEquals(c2,mst.get(0).getValue1().getValue1().getValue());
         assertEquals(c4,mst.get(0).getValue1().getValue2().getValue());
@@ -677,4 +679,3 @@ public class AdjacentMatrixGraphTest {
     }
 
 }
-

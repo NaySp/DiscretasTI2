@@ -30,6 +30,12 @@ public class Manager {
         return stations.getPath(destination1);
     }
 
+    public String bestTravel(String destination) throws VertexNotFoundException {
+        Station station = searchVertex(destination);
+        stations.prim();
+        return stations.getPath(station);
+    }
+
     public void addEdge(String source, String dest, int weight) throws Exception {
         Station origin1 = searchVertex(source);
         Station destination1 = searchVertex(dest);
